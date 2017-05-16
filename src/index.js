@@ -23,20 +23,20 @@ module.exports = function (config) {
 
     // Some providers don't allow access to template1.
     // Instead of failing hard, raise an error on the console, and attempt to connect to the database anyways.
-    try {
-      const noDbClient = new pg.Client(Object.assign({}, config, {database: 'template1'}));
-      yield connect(noDbClient);
-      const dbexistsQuery = yield q(noDbClient, `SELECT 1 from pg_database WHERE datname='${config.database}'`);
+    // try {
+    //   const noDbClient = new pg.Client(Object.assign({}, config, {database: 'template1'}));
+    //   yield connect(noDbClient);
+    //   const dbexistsQuery = yield q(noDbClient, `SELECT 1 from pg_database WHERE datname='${config.database}'`);
 
-      if(dbexistsQuery.rows.length === 0) {
-        console.log('botkit-storage-postgres> creating db ' + config.database);
-        yield q(noDbClient, 'CREATE DATABASE ' + config.database);
-      }
+    //   if(dbexistsQuery.rows.length === 0) {
+    //     console.log('botkit-storage-postgres> creating db ' + config.database);
+    //     yield q(noDbClient, 'CREATE DATABASE ' + config.database);
+    //   }
 
-      noDbClient.end();
-    } catch(err) {
-      console.error("Could not create database. Error: ", err.stack);
-    }
+    //   noDbClient.end();
+    // } catch(err) {
+    //   console.error("Could not create database. Error: ", err.stack);
+    // }
 
     const dbClient = new pg.Client(config);
     yield connect(dbClient);
